@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>User Dashboard</title>
+</head>
+
+<body>
+	<h1>Welcome, <%= user.name %>!</h1>
+
+	<!-- Display user information -->
+	<p>Name: <%= user.name %></p>
+	<p>Email: <%= user.email %></p>
+
+	<!-- List of tasks -->
+	<h2>Task List</h2>
+	<ul>
+		<% tasks.forEach(task => { %>
+		<li>
+			<p><%= task.title %> (Status: <%= task.status %>, Priority: <%= task.priority %>)</p>
+		</li>
+		<% }); %>
+	</ul>
+
+	<!-- Add Task Form (if needed) -->
+	<h2>Add New Task <a href="/task/create">Create Task</a></h2>
+
+</body>
+
+</html>
