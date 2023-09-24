@@ -7,7 +7,7 @@
 
 <body>
 	<h1>Create a New Task</h1>
-	<form method="POST" action="/task">
+	<form method="post" action="/task/create">
 		<label for="title">Title:</label><br>
 		<input type="text" id="title" name="title" required><br>
 
@@ -15,20 +15,20 @@
 		<textarea id="description" name="description"></textarea><br>
 
 		<label for="priority">Priority:</label><br>
-		<select id="priority" name="priority">
+		<select id="priority" name="priority" required>
 			<option value="high">High</option>
 			<option value="medium" selected>Medium</option>
 			<option value="low">Low</option>
 		</select><br>
 
 		<label for="dueDate">Due Date:</label><br>
-		<input type="date" id="dueDate" name="dueDate"><br>
+		<input type="date" id="dueDate" name="dueDate" required><br>
 
 		<label for="category">Category:</label><br>
 		<input type="text" id="category" name="category"><br>
 
 		<label for="status">Status:</label><br>
-		<select id="status" name="status">
+		<select id="status" name="status" required>
 			<option value="to-do" selected>To-Do</option>
 			<option value="in progress">In Progress</option>
 			<option value="completed">Completed</option>
@@ -41,13 +41,30 @@
 		<input type="text" id="attachments" name="attachments"><br>
 
 		<label for="collaborators">Collaborators:</label><br>
-		<input type="text" id="collaborators" name="collaborators"><br>
+		<select id="collaborators" name="collaborators" multiple>
+			<% users.forEach(user => { %>
+			<option value="<%= user.id %>"><%= user.name %></option>
+			<% }); %>
+		</select><br>
 
 		<label for="createdBy">Created By:</label><br>
-		<input type="text" id="createdBy" name="createdBy" required><br>
+		<input type="text" id="createdBy" name="createdBy" value="<%= createdBy._id %>" readonly required><br>
 
-		<input type="submit" value="Create Task"><br>
+		<button type="submit" onclick="createHandler()">Create Task</button><br>
+
 	</form>
+
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var socket = io()
+		function createHandler() {
+			return socket.emit('taskCreated')
+		}
+
+		socket.on('Created', async (data) => {
+			alert("Created Successfully")
+		})
+	</script>
 </body>
 
 </html>

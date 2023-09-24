@@ -9,13 +9,19 @@ const taskSchema = new Schema({
 		type: String,
 		enum: ['high', 'medium', 'low'],
 		default: 'medium',
+		required: true,
+
 	},
-	dueDate: Date,
+	dueDate: {
+		type: Date,
+		required: true,
+	},
 	category: String,
 	status: {
 		type: String,
 		enum: ['to-do', 'in progress', 'completed'],
 		default: 'to-do',
+		required: true
 	},
 	notes: [String], // Store notes as an array of strings
 	attachments: [String], // Store file URLs or references

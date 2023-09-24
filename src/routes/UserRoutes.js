@@ -1,20 +1,27 @@
 import { Router } from 'express'
 import { UserController } from '../controllers/UserController.js';
-
 const controller = new UserController()
+
 export const userRouter = Router();
 
-// Pointing references towards userController methods
 
-userRouter.post('/signup', controller.signup);
-userRouter.post('/login', controller.login);
-userRouter.get('/logout', controller.logout);
-userRouter.get('/signup', (req, res) => {
-	res.render('signup')
+userRouter.get('/', controller.home)
+
+userRouter.post('/signin', controller.signin)
+
+userRouter.get('/login', controller.login)
+userRouter.get('/signup', controller.signup)
+
+userRouter.get('/dashboard', controller.dashboard)
+
+userRouter.post('/register', controller.register)
+
+userRouter.get('/task', async (req, res, next) => {
+	next();
 })
-userRouter.get('/login', (req, res) => {
-	res.render('login')
-})
-userRouter.get('/dashboard', (req, res) => {
-	res.render('dashboard')
+
+userRouter.post('/logout', (req, res) => {
+	res.status(200)
+	res.clearCookie('jwt')
+	res.redirect("/")
 })

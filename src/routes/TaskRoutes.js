@@ -1,17 +1,13 @@
-import { Router } from "express";
-import { createTask, getAllTasks, getTaskById, updateTaskById, deleteTaskById, searchNFilter } from "../controllers/TaskController.js";
-import { checkLoggedIn } from "../middleware/checkLogin.js";
+import { Router } from 'express'
+import { TaskController } from '../controllers/TaskController.js';
 
+const controller = new TaskController()
 export const taskRouter = Router();
 
-taskRouter.get('/create', (req, res) => {
+taskRouter.get('/', controller.goToTaskCreate)
 
-	res.render('createtask')
-})
-taskRouter.get('/search', checkLoggedIn, searchNFilter)
-taskRouter.post('/', checkLoggedIn, createTask)
-taskRouter.get('/', checkLoggedIn, getAllTasks)
-taskRouter.get('/:id', checkLoggedIn, getTaskById)
-taskRouter.patch('/:id', checkLoggedIn, updateTaskById)
-taskRouter.delete('/:id', checkLoggedIn, deleteTaskById)
+taskRouter.post('/create', controller.create)
 
+taskRouter.get('/update/:id', controller.getUpdateForm)
+
+taskRouter.post('/updateForm/:id', controller.postUpdateForm)

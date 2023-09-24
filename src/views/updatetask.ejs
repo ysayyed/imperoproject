@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Update Task</title>
+</head>
+
+<body>
+	<a href="/dashboard">Dashboard</a>
+	<h1>Update Task</h1>
+	<form action="/task/updateForm/<%= id %>" method="post">
+		<input type="hidden" name="_method" value="put">
+		<label for="title">Title:</label><br>
+		<input type="text" id="title" name="title" value="<%=task.title%>"><br>
+
+		<label for="description">Description:</label><br>
+		<textarea id="description" name="description"><%= task.description %></textarea><br>
+
+		<label for="priority">Priority:</label><br>
+		<select id="priority" name="priority" aria-selected="<%= task.priority %>">
+			<option value="high">High</option>
+			<option value="medium" selected>Medium</option>
+			<option value="low">Low</option>
+		</select><br>
+		<label for="dueDate">Due Date:</label><br>
+		<input type="date" id="dueDate" name="dueDate"><br>
+		<script>
+			let date = '<%= task.dueDate %>'
+			date = new Date(date).toISOString().slice(0, 10)
+			let doc = document.getElementById('dueDate')
+			doc.setAttribute('value', date)
+		</script>
+
+		<label for="category">Category:</label><br>
+		<input type="text" id="category" name="category" value="<%= task.category %>"><br>
+
+		<label for="status">Status:</label><br>
+		<select id="status" name="status" aria-selected="<%= task.status %>">
+			<option value="to-do" selected>To-Do</option>
+			<option value="in progress">In Progress</option>
+			<option value="completed">Completed</option>
+		</select><br>
+
+		<label for="notes">Notes:</label><br>
+		<textarea id="notes" name="notes"><%= task.notes %></textarea><br>
+
+		<label for="attachments">Attachments:</label><br>
+		<input type="text" id="attachments" name="attachments" value="<%= task.attachments %>"><br>
+
+		<label for="collaborators">Collaborators:</label><br>
+		<select id="collaborators" name="collaborators" multiple>
+			<% users.forEach(user => { %>
+			<option value=" <%= user.id %>"><%= user.name %></option>
+			<% }); %>
+		</select><br>
+
+		<label for="createdBy">Created By:</label><br>
+		<input type="text" id="createdBy" name="createdBy" value="<%= createdBy._id %>" readonly><br>
+
+		<input type="submit" onclick='updateHandler()' value="Update Task"><br>
+
+	</form>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var socket = io()
+		function updateHandler() {
+			socket.emit('Updated')
+		}
+
+		socket.on('Updated', (data) => {
+			window.alert('Updated Successfully')
+		})
+
+	</script>
+</body>
+
+</html>
